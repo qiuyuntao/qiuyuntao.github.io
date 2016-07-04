@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>瓦斯弹要爆炸了</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="瓦斯弹要爆炸了">
+<meta property="og:url" content="https://qiuyuntao.github.io/index.html">
+<meta property="og:site_name" content="瓦斯弹要爆炸了">
+<meta property="og:description">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="瓦斯弹要爆炸了">
+<meta name="twitter:description">
+  
+    <link rel="alternate" href="/atom.xml" title="瓦斯弹要爆炸了" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">瓦斯弹要爆炸了</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://qiuyuntao.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-reduceBundleJs" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/04/04/reduceBundleJs/" class="article-date">
+  <time datetime="2016-04-04T04:12:57.000Z" itemprop="datePublished">2016-04-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/04/04/reduceBundleJs/">减少bundle.js体积</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://lacke.mn/reduce-your-bundle-js-file-size/" target="_blank" rel="external">本文为译文，原文点我</a></p>
+<p>我开发了很多年的SPA（单页应用），然而我总是很惊讶很多开发者都不去思考<code>bundle.js</code>的体积大小。</p>
+<blockquote>
+<p>“压缩代码之后，大小还是可以接受的啊” ~一些人是这么说的，但是现在我不这么认为</p>
+</blockquote>
+<p>即使我压缩<code>bundle.js</code>，在一个大型的应用中也会花费很多时间去加载这些资源，在低网速和手机上显示的时候特别慢。我们怎么样才能显著的解决这个问题呢？</p>
+<p>非常简单！使用相对的文件路径。让我们来看下这个例子，看看有什么不同。</p>
+<h4 id="u4F8B_u5B501"><a href="#u4F8B_u5B501" class="headerlink" title="例子1"></a>例子1</h4><p>首先，我们用ES6的解构语法加载模块来编写一个简单的应用。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"># src/example.js</span><br><span class="line"></span><br><span class="line">import &#123; concat, sortBy, map, sample &#125; from 'lodash';</span><br><span class="line"></span><br><span class="line">// Example: sortBy</span><br><span class="line">const users = [</span><br><span class="line">  &#123; 'user': 'fred',   'age': 48 &#125;,</span><br><span class="line">  &#123; 'user': 'barney', 'age': 36 &#125;,</span><br><span class="line">  &#123; 'user': 'fred',   'age': 42 &#125;,</span><br><span class="line">  &#123; 'user': 'barney', 'age': 34 &#125;</span><br><span class="line">];</span><br><span class="line">const exampleSortBy = sortBy(users, function(o) &#123; return o.user; &#125;);</span><br><span class="line">console.log(exampleSortBy);</span><br><span class="line"></span><br><span class="line">// Example: map</span><br><span class="line">const exampleMap = map(users, 'user');</span><br><span class="line">console.log(exampleMap);</span><br><span class="line"></span><br><span class="line">// Example: concat</span><br><span class="line">const array = [1];</span><br><span class="line">const exampleConcat = concat(array, 2, [3], [[4]]);</span><br><span class="line">console.log(exampleConcat);</span><br><span class="line"></span><br><span class="line">// Example: sample</span><br><span class="line">const exampleSample = sample([1, 2, 3, 4]);</span><br><span class="line">console.log(exampleSample);</span><br></pre></td></tr></table></figure>
+<p>我们使用<code>browserify</code>来编译、打包这个应用</p>
+<p><code>browserify src/example.js -o dist/bundle.js -t [ babelify --presets [ es2015 ] ] -v -d -g uglifyify</code></p>
+<p>目前为止，情况很好。我们编写下一个例子，然后比较一下编译打包后的文件大小。</p>
+<h4 id="u4F8B_u5B502"><a href="#u4F8B_u5B502" class="headerlink" title="例子2"></a>例子2</h4><p>我们编写一个功能一样的应用。但是我们使用文件的路径来加载所有的模块，而不使用ES6的解构来加载模块。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"># src/example-2.js</span><br><span class="line"></span><br><span class="line">import concat from 'lodash/concat';</span><br><span class="line">import sortBy from 'lodash/sortBy';</span><br><span class="line">import map from 'lodash/map';</span><br><span class="line">import sample from 'lodash/sample';</span><br><span class="line"></span><br><span class="line">// Example: sortBy</span><br><span class="line">const users = [</span><br><span class="line">  &#123; 'user': 'fred',   'age': 48 &#125;,</span><br><span class="line">  &#123; 'user': 'barney', 'age': 36 &#125;,</span><br><span class="line">  &#123; 'user': 'fred',   'age': 42 &#125;,</span><br><span class="line">  &#123; 'user': 'barney', 'age': 34 &#125;</span><br><span class="line">];</span><br><span class="line">const exampleSortBy = sortBy(users, function(o) &#123; return o.user; &#125;);</span><br><span class="line">console.log(exampleSortBy);</span><br><span class="line"></span><br><span class="line">// Example: map</span><br><span class="line">const exampleMap = map(users, 'user');</span><br><span class="line">console.log(exampleMap);</span><br><span class="line"></span><br><span class="line">// Example: concat</span><br><span class="line">const array = [1];</span><br><span class="line">const exampleConcat = concat(array, 2, [3], [[4]]);</span><br><span class="line">console.log(exampleConcat);</span><br><span class="line"></span><br><span class="line">// Example: sample</span><br><span class="line">const exampleSample = sample([1, 2, 3, 4]);</span><br><span class="line">console.log(exampleSample);</span><br></pre></td></tr></table></figure>
+<p>现在，我们来编译我们的代码</p>
+<p><code>browserify src/example-2.js -o dist/bundle-2.js -t [ babelify --presets [ es2015 ] ] -v -d -g uglifyify</code></p>
+<p><strong> 问题 </strong>：你觉得哪个例子生成出来的文件更小？</p>
+<h4 id="u6BD4_u8F83"><a href="#u6BD4_u8F83" class="headerlink" title="比较"></a>比较</h4><p>我们的应用做的事情完全一样。代码也几乎相同，编译之后我们发现例子2的代码要小很多。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ls -lha dist/&#10;bundle-2.js (84K)&#10;bundle.js (204K)</span><br></pre></td></tr></table></figure>
+<p>原因我们在上面已经提到了：我们没有引入所有<code>lodash</code>,而是引入了我们需要用的文件。</p>
+<p>这个对于所有的<code>node modules</code>都适用。简单的把引入模块的结构语法替换成实际路径引入的语法，很快能到减少的文件大小。</p>
+<h4 id="u6E90_u7801"><a href="#u6E90_u7801" class="headerlink" title="源码"></a>源码</h4><p>如果你想看这个例子的源码，你可以从github上check out 这个仓库</p>
+<p><a href="https://github.com/tlackemann/minimize-bundle-js-size" target="_blank" rel="external">https://github.com/tlackemann/minimize-bundle-js-size</a></p>
+<p>我收到了很多回复提到了Webpack2、Rollup等等。是的，这些新技术是很棒，有一个名为<code>tree shaking</code>的功能（可以在打包中不引入我们不需要的代码）。但是在你接手一个老的项目的时候，你很有可能是不能使用这些新技术，需要的是一些其他的办法来解决这个问题。本文提到的方法可以更快速的解决你当前遇到的问题。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://qiuyuntao.github.io/2016/04/04/reduceBundleJs/" data-id="ciq7uelkr00039l97y335cvfm" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-iosOrientation" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/03/08/iosOrientation/" class="article-date">
+  <time datetime="2016-03-08T14:12:57.000Z" itemprop="datePublished">2016-03-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/08/iosOrientation/">判断ios设备旋转方向</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <hr>
+<p>title: 判断ios设备旋转方向<br>date: 2016-03-8 22:12:57</p>
+<h2 id="tags_3A_ios"><a href="#tags_3A_ios" class="headerlink" title="tags: ios"></a>tags: ios</h2><ul>
+<li><p>首先你要在对应的<code>controller</code>中，开启旋转的功能</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// &#40664;&#35748;&#24320;&#21551;&#20840;&#37096;&#26041;&#21521;&#30340;&#26059;&#36716;&#10;- (BOOL)shouldAutorotate &#123;&#10;    return YES;&#10;&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>下一个方法是可以旋转接受哪几个方向的旋转</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (UIInterfaceOrientationMask)supportedInterfaceOrientations &#123;&#10;      return UIInterfaceOrientationMaskPortrait |UIInterfaceOrientationMaskLandscapeLeft;&#10;  &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">// &#21487;&#20197;&#36873;&#25321;&#22810;&#20010;&#26041;&#21521;&#36873;&#25321;&#10;typedef NS_OPTIONS(NSUInteger, UIInterfaceOrientationMask) &#123;&#10;    UIInterfaceOrientationMaskPortrait = (1 &#60;&#60; UIInterfaceOrientationPortrait),&#10;    UIInterfaceOrientationMaskLandscapeLeft = (1 &#60;&#60; UIInterfaceOrientationLandscapeLeft),&#10;    UIInterfaceOrientationMaskLandscapeRight = (1 &#60;&#60; UIInterfaceOrientationLandscapeRight),&#10;    UIInterfaceOrientationMaskPortraitUpsideDown = (1 &#60;&#60; UIInterfaceOrientationPortraitUpsideDown),&#10;    UIInterfaceOrientationMaskLandscape = (UIInterfaceOrientationMaskLandscapeLeft | UIInterfaceOrientationMaskLandscapeRight),&#10;    UIInterfaceOrientationMaskAll = (UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskLandscapeLeft | UIInterfaceOrientationMaskLandscapeRight | UIInterfaceOrientationMaskPortraitUpsideDown),&#10;    UIInterfaceOrientationMaskAllButUpsideDown = (UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskLandscapeLeft | UIInterfaceOrientationMaskLandscapeRight),&#10;&#125; __TVOS_PROHIBITED;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>旋转的时候，你可以开启系统通知的功能，这样你就可以在旋转的时候执行特定的函数了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[NSNotificationCenter defaultCenter] addObserver:self&#10;                    selector:@selector(statusBarOrientationChange:)                                                               name:UIApplicationDidChangeStatusBarOrientationNotification&#10;                                             object:nil];&#10;&#10; // &#25171;&#21360;&#20986;&#30456;&#20851;&#30340;&#26041;&#21521;&#10; - (void)statusBarOrientationChange:(NSNotification *)notification &#123;&#10;&#10;    UIInterfaceOrientation oriention = [UIApplication sharedApplication].statusBarOrientation;&#10;    NSLog(@&#34;%ld&#34;,(long)oriention);&#10;&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://qiuyuntao.github.io/2016/03/08/iosOrientation/" data-id="ciq7uell5000d9l97jx4qn9lz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ios/">ios</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-initialMacApacheConfig" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/13/initialMacApacheConfig/" class="article-date">
+  <time datetime="2016-02-13T02:40:57.000Z" itemprop="datePublished">2016-02-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/13/initialMacApacheConfig/">mac初始化配置apache启动目录</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="u6B64_u6587_u7AE0_u7684_u76EE_u7684_u662F_u628Aapache_u7684_u9ED8_u8BA4_u542F_u52A8_u76EE_u5F55_u6539_u4E3A_u5F53_u524D_u7684_u7528_u6237_u76EE_u5F55"><a href="#u6B64_u6587_u7AE0_u7684_u76EE_u7684_u662F_u628Aapache_u7684_u9ED8_u8BA4_u542F_u52A8_u76EE_u5F55_u6539_u4E3A_u5F53_u524D_u7684_u7528_u6237_u76EE_u5F55" class="headerlink" title="此文章的目的是把apache的默认启动目录改为当前的用户目录"></a>此文章的目的是把<code>apache</code>的默认启动目录改为当前的用户目录</h4><p>默认情况下mac下apachectl配置的默认路径是</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/Library/WebServer/Documents</span><br></pre></td></tr></table></figure>
+<p>我们可能需要在本地的服务器上访问我们的文件，通过这个地址我们很不方便的访问我们需要的文件，我们可以修改我们apachectl的根目录来快速的访问到我们需要访问的文件。</p>
+<h4 id="u7B2C_u4E00_u6B65"><a href="#u7B2C_u4E00_u6B65" class="headerlink" title="第一步"></a>第一步</h4><hr>
+<p>我们需要找到apachectl的配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd /etc/apache2</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim httpd.conf</span><br></pre></td></tr></table></figure>
+<h4 id="u7B2C_u4E8C_u6B65"><a href="#u7B2C_u4E8C_u6B65" class="headerlink" title="第二步"></a>第二步</h4><hr>
+<p>在文件中搜索<br><code>&lt;Directory &quot;/Library/WebServer/Documents&quot;&gt;</code><br>将<code>Options FollowSymLinks Multiviews</code>修改为<code>Options Indexes FollowSymLinks Multiviews</code></p>
+<p>因为系统级根目录默认没有开启目录列表，这个修改则开启了目录列表</p>
+<p>在终端上输入</p>
+<p><code>cd &amp;&amp; pwd</code><br>查看你当前用户级的目录地址<code>/Users/username</code></p>
+<p>将<br><code>&lt;Directory &quot;/Library/WebServer/Documents&quot;&gt;</code>替换为<code>&lt;Directory &quot;/Users/username&quot;&gt;</code><br><code>#DocumentRoot &quot;/Library/WebServer/Documents&quot;</code>替换为<code>#DocumentRoot &quot;/Users/username&quot;</code></p>
+<h4 id="u7B2C_u4E09_u6B65"><a href="#u7B2C_u4E09_u6B65" class="headerlink" title="第三步"></a>第三步</h4><hr>
+<p>这个时候我们去打开我们的localhost访问是，会提示没有权限，这个时候我们需要在配置文件下面添加<code>username.conf</code>添加我们的用户信息，将文件保存在<code>/etc/apache2/users/</code>下。这里需要使用<code>sudo</code>权限。</p>
+<h3 id="u5176_u4ED6"><a href="#u5176_u4ED6" class="headerlink" title="其他"></a>其他</h3><p>更多信息可以参考<a href="http://note.rpsh.net/posts/2013/11/27/osx-10-9-apache-server-php-mysql/" target="_blank" rel="external">这篇文章</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://qiuyuntao.github.io/2016/02/13/initialMacApacheConfig/" data-id="ciq7uell7000g9l970s8r51a8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mac/">mac</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-publishNpmModule" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/04/publishNpmModule/" class="article-date">
+  <time datetime="2016-02-04T07:40:57.000Z" itemprop="datePublished">2016-02-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/04/publishNpmModule/">发布一个npm模块</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="u53D1_u5E03_u6A21_u5757"><a href="#u53D1_u5E03_u6A21_u5757" class="headerlink" title="发布模块"></a>发布模块</h2><ul>
+<li>创建新目录<ul>
+<li><code>npm init</code></li>
+<li>自动生成<code>package.json</code></li>
+<li><code>name</code>和<code>version</code>是必须要的</li>
+<li><code>name</code>为<code>qyt-test</code></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>创建<code>index.js</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export.printMsg = function() &#123;&#10;  console.log(&#39;this module name is qyt-test&#39;);&#10;&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>package.json</code>里有一个<code>main</code>字段，默认引入的就是这个字段的文件</p>
+<ul>
+<li><code>&quot;main&quot;: &quot;index.js&quot;</code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var aMoudle = require(&#39;qyt-test&#39;);&#10;/**&#10;* aMoudle &#23601;&#26159; index.js&#37324;&#36755;&#20986;&#30340;&#20869;&#23481;&#10;**/</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>注册<code>npm</code>账号（两个方法）</p>
+<ol>
+<li><a href="https://www.npmjs.com/" target="_blank" rel="external">注册地址</a></li>
+<li><code>npm adduser</code></li>
+</ol>
+</li>
+</ul>
+<ul>
+<li><code>npm</code>登录<ul>
+<li><code>npm login</code></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><code>npm</code>模块发布<ul>
+<li><code>npm publish</code></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><code>npm</code>tags<ul>
+<li>安装<code>npm</code>包的时候，可以使用<code>npm install qyt-test</code>来安装，或者使用<code>npm install qyt-test@1.0.0</code>、<code>npm install qyt-test@beta</code>来安装</li>
+<li>@后面的标识符就是我们<code>npm publish</code>发布所打的<code>tag</code>。</li>
+<li>默认情况，发布版本的时候会打上你的<code>package.json</code>的version做为tag。<ul>
+<li>例如你的<code>package.json</code>里的<code>&quot;version&quot;: &quot;1.0.3&quot;</code>，你安装的时候就可以使用<code>npm install qyt-test@1.0.3</code></li>
+</ul>
+</li>
+<li>同时默认情况下，会在最后一次的<code>npm publish</code>中给你打上<code>latest</code>的tag<ul>
+<li>例如你的最后一次发布<code>package.json</code>里的<code>&quot;version&quot;: &quot;1.0.3&quot;</code>，你安装的时候就可以使用<code>npm install qyt-test@1.0.3</code>以及<code>npm install qyt-test@latest</code></li>
+</ul>
+</li>
+<li>你也可以增加其他的<code>tag</code><ul>
+<li><code>npm dist-tag add &lt;pkg&gt;@&lt;version&gt; [&lt;tag&gt;]</code>  例如 <code>npm dist-tag qyt-test@1.0.3 beta</code></li>
+<li>你也可以直接在发布的时候<code>npm publish --tag beta</code></li>
+<li>如果你想给已经发布过的模块打<code>tag</code>，也是使用<code>npm dist-tag qyt-test@1.0.0 beta</code></li>
+</ul>
+</li>
+<li>删除<code>tag</code><ul>
+<li><code>npm dist-tag rm &lt;pkg&gt; &lt;tag&gt;</code></li>
+<li>例如<code>npm dist-tag rm qyt-test beta</code></li>
+</ul>
+</li>
+<li>查看模块<code>tag</code><ul>
+<li><code>npm dist-tag ls [&lt;pkg&gt;]</code></li>
+<li>例如 <code>npm dist-tag ls qyt-test</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="u4F7F_u7528_u4F60_u53D1_u5E03_u7684_u6A21_u5757"><a href="#u4F7F_u7528_u4F60_u53D1_u5E03_u7684_u6A21_u5757" class="headerlink" title="使用你发布的模块"></a>使用你发布的模块</h2><ul>
+<li><p>创建路径</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir test&#10;cd test&#10;npm init&#10;npm install qyt-test&#10;touch index.js</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch index.js&#10;&#10;/**&#10;* in index.js&#10;**/&#10;var a = require(&#39;qyt-test&#39;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行<br><code>node index.js</code>会输出<code>this module name is qyt-test</code></p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://qiuyuntao.github.io/2016/02/04/publishNpmModule/" data-id="ciq7uelkz00059l97dcs6udv9" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/npm/">npm</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-npmTutorial" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/02/04/npmTutorial/" class="article-date">
+  <time datetime="2016-02-04T02:40:57.000Z" itemprop="datePublished">2016-02-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/04/npmTutorial/">npm教程</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="u57FA_u672C_u4F7F_u7528"><a href="#u57FA_u672C_u4F7F_u7528" class="headerlink" title="基本使用"></a>基本使用</h3><ul>
+<li>安装与升级<ul>
+<li>在安装 <code>node</code>的时候会自动安装<code>npm</code></li>
+<li><code>sudo npm install npm -g</code>进行升级,使用<code>cnpm</code>的话，<code>sudo cpm install npm -g</code>进行升级</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>安装模块<ul>
+<li>全局<ul>
+<li>命令行等工具，使用全局安装</li>
+<li><code>npm install &lt;package_name&gt; -g</code></li>
+</ul>
+</li>
+<li>本地项目<ul>
+<li>你项目中的各种依赖</li>
+<li><code>npm install &lt;package_name&gt;</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>使用<code>package.json</code><ul>
+<li>在项目中管理<code>npm</code>模块，最好的方式是创建一个<code>package.json</code>的文件进行管理</li>
+<li>好处<ul>
+<li>你依赖的各个模块在文件中都有记载</li>
+<li>可以让你指定模块的特定版本</li>
+<li>更好的协作性</li>
+</ul>
+</li>
+<li><code>npm install &lt;package_name&gt; --save</code>安装模块，并写入<code>package.json</code>的<code>dependencies</code>字段</li>
+<li><code>npm install &lt;package_name&gt; --save-dev</code>安装模块，并写入<code>package.json</code>的<code>devDependencies</code>字段</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><code>package.json</code>中的版本号<ul>
+<li>指定版本: <code>&quot;gulp&quot;: &quot;1.2.2&quot;</code>，只允许装<code>1.2.2</code>的版本</li>
+<li>允许bug-fixed版本自动升级<code>~</code>: <code>&quot;gulp&quot;: &quot;~1.2.2&quot;</code>，最后一位小版本可以高于2，但不允许装<code>1.3.x</code>的版本,<code>1.2.3</code>的版本是可以的</li>
+<li>中间版本号可以升级<code>+</code>: <code>&quot;gulp&quot;: &quot;+1.2.2&quot;</code>,可以安装<code>1.x.x</code>的版本，但是<code>2.x.x</code>是不允许的</li>
+<li><code>latest</code>: <code>&quot;gulp&quot;: &quot;latest&quot;</code>，安装最新版本</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>升级模块<ul>
+<li>本地模块<ul>
+<li><code>npm outdated</code> 查看哪些需要升级</li>
+<li><code>npm update</code>进行升级</li>
+</ul>
+</li>
+<li>全局模块<ul>
+<li><code>npm outdated -g --depth=0</code></li>
+<li><code>npm update -g</code> 升级全部模块</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>卸载模块<ul>
+<li>本地<ul>
+<li><code>npm uninstall lodash</code>删除模块</li>
+<li><code>npm uninstall --save lodash</code>，删除模块，并在<code>package.json</code>中移除</li>
+</ul>
+</li>
+<li>全局<ul>
+<li><code>npm uninstall -g jshint</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="u95EE_u9898"><a href="#u95EE_u9898" class="headerlink" title="问题"></a>问题</h3><ul>
+<li><a href="https://docs.npmjs.com/getting-started/fixing-npm-permissions" target="_blank" rel="external">提示<code>EACCES</code>error（两种解决方案）</a><ol>
+<li>改变<code>npm</code>默认目录的权限<ul>
+<li>找到<code>npm</code>的路径<ul>
+<li><code>npm config get prefix</code></li>
+</ul>
+</li>
+<li><code>sudo chown -R $(whoami) $(npm config get prefix)/{lib/node_modules,bin,share}</code></li>
+</ul>
+</li>
+<li>更改<code>npm</code>的默认目录<ul>
+<li>创建一个新目录<code>mkdir ~/.npm-global</code></li>
+<li><code>npm</code>配置到该目录 <code>npm config set prefix &#39;~/.npm-global&#39;</code></li>
+<li>创建一个<code>~/.profile</code>文件，并写入 <code>export PATH=~/.npm-global/bin:$PATH</code></li>
+<li>回到命令行，进行编译 <code>source ~/.profile</code></li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://qiuyuntao.github.io/2016/02/04/npmTutorial/" data-id="ciq7uell100089l97o0de59xk" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/npm/">npm</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-npmRunScript" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/27/npmRunScript/" class="article-date">
+  <time datetime="2016-01-27T02:40:57.000Z" itemprop="datePublished">2016-01-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/27/npmRunScript/">npm start 和 npm run start</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="u80CC_u666F"><a href="#u80CC_u666F" class="headerlink" title="背景"></a>背景</h3><p>在项目的目录中，我们会在 <code>package.json</code> 里配置 <code>scripts</code>项</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#10;  &#34;name&#34;: &#34;hexo-site&#34;,&#10;  &#34;version&#34;: &#34;0.0.0&#34;,&#10;  &#34;private&#34;: true,&#10;  &#34;hexo&#34;: &#123;&#10;    &#34;version&#34;: &#34;3.1.1&#34;&#10;  &#125;,&#10;  &#34;dependencies&#34;: &#123;&#10;    &#34;hexo&#34;: &#34;^3.1.1&#34;,&#10;    &#34;hexo-generator-archive&#34;: &#34;^0.1.3&#34;,&#10;    &#34;hexo-generator-category&#34;: &#34;^0.1.3&#34;,&#10;    &#34;hexo-generator-index&#34;: &#34;^0.2.0&#34;,&#10;    &#34;hexo-generator-tag&#34;: &#34;^0.1.2&#34;,&#10;    &#34;hexo-renderer-ejs&#34;: &#34;^0.1.0&#34;,&#10;    &#34;hexo-renderer-stylus&#34;: &#34;^0.3.0&#34;,&#10;    &#34;hexo-renderer-marked&#34;: &#34;^0.2.6&#34;,&#10;    &#34;hexo-server&#34;: &#34;^0.1.2&#34;&#10;  &#125;,&#10;  &#34;scripts&#34;: &#123;&#10;    &#34;start&#34;: &#34;hexo server&#34;,&#10;    &#34;publish&#34;: &#34;hexo generate&#34;&#10;  &#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p>在这里你可以直接使用 <code>shell</code> command <code>npm start</code>去起hexo server，在端口中查看你的修改。<br>但是你会发现，我操<code>npm publish</code>是没用的。</p>
+<h3 id="u4E3A_u4EC0_u4E48_u4F1A_u8FD9_u6837"><a href="#u4E3A_u4EC0_u4E48_u4F1A_u8FD9_u6837" class="headerlink" title="为什么会这样"></a>为什么会这样</h3><p>遇到这种问题，肯定要去看看文档啊。<a href="https://docs.npmjs.com/cli/run-script" target="_blank" rel="external">npm-run-script</a>。<br>文档里是这么说的 <code>If no &quot;command&quot; is provided, it will list the available scripts. run[-script] is used by the test, start, restart, and stop commands, but can be called directly, as well</code>,也就是说 <code>test, start, restart, and stop</code>这几个命令是不用加<code>run</code>，其他几个都是要加<code>run</code>。</p>
+<p>所以，想要<code>publish</code>的话，就需要<code>npm run publish</code>就可以了。</p>
+<h3 id="u53C2_u8003_u6587_u6863"><a href="#u53C2_u8003_u6587_u6863" class="headerlink" title="参考文档"></a>参考文档</h3><ul>
+<li><a href="https://docs.npmjs.com/cli/run-script" target="_blank" rel="external">npm-run-script</a>。</li>
+<li><a href="https://docs.npmjs.com/misc/scripts" target="_blank" rel="external">npm-scripts</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://qiuyuntao.github.io/2016/01/27/npmRunScript/" data-id="ciq7uell3000a9l974o7l68od" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-getReset" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/25/getReset/" class="article-date">
+  <time datetime="2016-01-25T13:40:57.000Z" itemprop="datePublished">2016-01-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/25/getReset/">git 版本回退 -- git log 和 git reflog 的区别</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="u80CC_u666F"><a href="#u80CC_u666F" class="headerlink" title="背景"></a>背景</h3><p>今天代码写着写着，就发现在IE8有问题，但是在改代码之前是没问题的。这个时候我就决定先<code>commit</code>我的代码，然后<code>reset</code>到我刚才<code>pull</code>的远程最新版本上去。</p>
+<p>回退完之后，也看出是什么问题了，我就想回到我刚才<code>commit</code>的那个时候去，执行了<code>git log</code>命令，这个时候我傻眼了，麻痹的我的<code>commit</code>记录没了。当时无所个草泥马在眼前，当时就呆在那坐了回，骂了半天，什么鬼。</p>
+<h3 id="u89E3_u51B3_u65B9_u6848"><a href="#u89E3_u51B3_u65B9_u6848" class="headerlink" title="解决方案"></a>解决方案</h3><p>然后我就去<code>google</code>了一下（总不能让我重新写我写了一上午的东西吧），我觉得我<code>commit</code>过了，肯定不会有问题的，代码一定还在。果不出其然，我发现了还有一个命令<code>git reflog</code>，执行了之后，找到了我刚才<code>commit</code>的<code>id</code>，直接<code>git reset --hard xxx</code>，找回了我之前的代码。</p>
+<h3 id="u539F_u7406"><a href="#u539F_u7406" class="headerlink" title="原理"></a>原理</h3><ul>
+<li><a href="http://git-scm.com/docs/git-log" target="_blank" rel="external">git log</a><ul>
+<li><code>git log</code>展示的是当前的<code>HEAD</code>以及它之前的各种信息。等于它只能找到之前的各种<code>commit</code>、<code>merge</code>等信息。</li>
+<li>所以在我<code>reset</code>之后，找不到我<code>commit</code>的记录，因为这次的<code>commit</code>是在此时<code>HEAD</code>之后进行的。</li>
+</ul>
+</li>
+<li><a href="https://www.git-scm.com/docs/git-reflog" target="_blank" rel="external">git reflog</a><ul>
+<li><code>git reflog</code>记录了你的目录下任意时刻的<code>commits</code>。所以就算我<code>reset</code>了，依旧会有我的记录。</li>
+</ul>
+</li>
+</ul>
+<h3 id="u603B_u7ED3"><a href="#u603B_u7ED3" class="headerlink" title="总结"></a>总结</h3><p>所以说，只要你<code>commit</code>过，始终<code>reflog</code>绝壁是能找到你的<code>commit</code>记录的</p>
+<p>“Keep calm and use <code>git reflog</code>“</p>
+<p><a href="http://stackoverflow.com/questions/17857723/whats-the-difference-between-git-reflog-and-log" target="_blank" rel="external">参考文档</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://qiuyuntao.github.io/2016/01/25/getReset/" data-id="ciq7uell9000j9l97usdkyzdg" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/">git</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-checkIsInIframe" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/01/21/checkIsInIframe/" class="article-date">
+  <time datetime="2016-01-21T14:12:57.000Z" itemprop="datePublished">2016-01-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/21/checkIsInIframe/">如何判断页面是否在iframe中</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>卧槽。。。我做前端这么久，一直没接触过<code>iframe</code>，最近在搞登录，总算是有机会接触下这玩意了。</p>
+<p>然后开发和我说在登录中要判断我们自己的页面是否是在<code>iframe</code>中，当时我就 <strong>懵逼</strong> 了。当时的第一想法是，这搞不定吧。后面<code>google</code>了一下，发现还是可以搞定的。</p>
+<p>就是判断<code>window</code>对象上的<code>top</code>属性是否等于自己。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">if (window.top === window) &#123;&#10;  console.log(&#39;&#25105;&#19981;&#22312;iframe&#20013;&#39;);&#10;&#125; else &#123;&#10;  console.log(&#39;&#25105;&#22312;iframe&#20013;&#39;);&#10;&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>那<code>top</code>对象是什么鬼呢<ul>
+<li>top 属性返回最顶层的先辈窗口。<br>该属性返回对一个顶级窗口的只读引用。</li>
+<li>如果窗口本身就是一个顶级窗口，top 属性存放对窗口自身的引用。如果窗口是一个框架，那么 top 属性引用包含框架的顶层窗口。</li>
+</ul>
+</li>
+</ul>
+<p>说的通俗一点就是，让你在iframe中的时候，top就是引用你的页面的window对象；当你不在的时候，就是自己的window对象了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#60;!-- father.html --&#62;&#10;&#60;html&#62;&#10;  &#60;head&#62;&#10;  &#60;/head&#62;&#10;  &#60;body&#62;&#10;    &#60;iframe src=&#34;./chind.html&#34;&#62;&#60;/iframe&#62;&#10;    &#60;script&#62;&#10;      console.log(window === window.top); // &#27809;&#26377;&#29238;&#31383;&#21475;&#65292;&#23601;&#26159;top&#23601;&#26159;window&#10;    &#60;/script&#62;&#10;  &#60;/body&#62;&#10;&#60;/html&#62;&#10;&#10;&#60;!-- child.html --&#62;&#10;&#60;html&#62;&#10;  &#60;head&#62;&#10;  &#60;/head&#62;&#10;  &#60;body&#62;&#10;    &#60;script&#62;&#10;      console.log(window === window.top); // &#29238;&#31383;&#21475;&#26159;father.html,&#25152;&#20197;window.top&#26159;father.html&#30340;window&#10;    &#60;/script&#62;&#10;  &#60;/body&#62;&#10;&#60;/html&#62;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://qiuyuntao.github.io/2016/01/21/checkIsInIframe/" data-id="ciq7uelkh00009l974xluza90" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios/">ios</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/">mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/npm/">npm</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/ios/" style="font-size: 10px;">ios</a> <a href="/tags/javascript/" style="font-size: 20px;">javascript</a> <a href="/tags/mac/" style="font-size: 10px;">mac</a> <a href="/tags/node/" style="font-size: 10px;">node</a> <a href="/tags/npm/" style="font-size: 20px;">npm</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/04/04/reduceBundleJs/">减少bundle.js体积</a>
+          </li>
+        
+          <li>
+            <a href="/2016/03/08/iosOrientation/">判断ios设备旋转方向</a>
+          </li>
+        
+          <li>
+            <a href="/2016/02/13/initialMacApacheConfig/">mac初始化配置apache启动目录</a>
+          </li>
+        
+          <li>
+            <a href="/2016/02/04/publishNpmModule/">发布一个npm模块</a>
+          </li>
+        
+          <li>
+            <a href="/2016/02/04/npmTutorial/">npm教程</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 却痕<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+  </div>
+</body>
+</html>
