@@ -61,6 +61,138 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-animate" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/10/03/animate/" class="article-date">
+  <time datetime="2016-10-03T07:19:59.000Z" itemprop="datePublished">2016-10-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/10/03/animate/">css 动画</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="animate_u52A8_u753B"><a href="#animate_u52A8_u753B" class="headerlink" title="animate动画"></a>animate动画</h2><ul>
+<li><code>animation-name</code>动画的名字</li>
+<li><code>animation-duration</code> 动画持续的时间</li>
+<li><code>animation-timing-function</code> 为动画的曲线<ul>
+<li>linear    动画从头到尾的速度是相同的。</li>
+<li>ease    默认。动画以低速开始，然后加快，在结束前变慢。</li>
+<li>ease-in    动画以低速开始</li>
+<li>ease-out    动画以低速结束</li>
+<li>ease-in-out    动画以低速开始和结束</li>
+<li>cubic-bezier(n,n,n,n) 在 cubic-bezier 函数中自己的值。可能的值是从 0 到 1 的数值。</li>
+</ul>
+</li>
+<li><code>animation-delay</code> 规定在动画开始之前的延迟</li>
+<li><code>animation-iteration-count</code> 动画播放的次数</li>
+<li><code>animation-direction</code> 属性定义是否应该轮流反向播放动画<ul>
+<li>normal 动画正常播放</li>
+<li>alternate 动画轮流反向播放</li>
+</ul>
+</li>
+<li><code>animation-fill-mode</code> 属性规定动画在播放之前或之后，其动画效果是否可见<ul>
+<li>none 不改变</li>
+<li>forwards 动画完成后，保持最后一帧</li>
+<li>backwards 动画完成后，保持第一帧</li>
+<li>both 前后叠加效果</li>
+</ul>
+</li>
+<li><code>animation-play-state</code> 动画是暂停还是继续进行<ul>
+<li>可以在js中进行操作 <code>object.style.animationPlayState=&quot;paused&quot;</code></li>
+</ul>
+</li>
+</ul>
+<style>
+.box {
+    width: 100px;
+    height: 100px;
+    background-color: red;
+    -webkit-animation: move 2s; // 动画持续的时间
+  animation-timing-function: ease-in-out; // 动画的表现方式
+  -webkit-animation-timing-function: ease-in-out;
+  animation-iteration-count: 20;
+  animation-direction: alternate;
+}
+
+@keyframes move {
+  0% {
+    transform: translateX(0rem);
+  }
+  100% {
+    transform: translateX(3rem);
+    opacity: 0;
+  }
+}
+</style>
+
+
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">.box &#123;</span><br><span class="line">	width: 100px;</span><br><span class="line">	height: 100px;</span><br><span class="line">	background-color: red;</span><br><span class="line">	animation-name: move; // 动画名字</span><br><span class="line">	animation-duration: 2000ms; // 动画持续时间</span><br><span class="line">  	animation-timing-function: ease-in-out; // 动画的表现方式</span><br><span class="line">  	animation-iteration-count: 20; // 持续次数</span><br><span class="line">  	animation-direction: alternate; // 轮播方式</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@keyframes move &#123;</span><br><span class="line">  0% &#123;</span><br><span class="line">    transform: translateX(0rem);</span><br><span class="line">  &#125;</span><br><span class="line">  100% &#123;</span><br><span class="line">    transform: translateX(3rem);</span><br><span class="line">    opacity: 0;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="transform_u52A8_u753B"><a href="#transform_u52A8_u753B" class="headerlink" title="transform动画"></a>transform动画</h2><h4 id="transition_u5C5E_u6027"><a href="#transition_u5C5E_u6027" class="headerlink" title="transition属性"></a>transition属性</h4><ul>
+<li>transition-property    规定设置过渡效果的 CSS 属性的名称。</li>
+<li>transition-duration    规定完成过渡效果需要多少秒或毫秒。</li>
+<li>transition-timing-function    规定速度效果的速度曲线。</li>
+<li>transition-delay    定义过渡效果何时开始。</li>
+</ul>
+<h4 id="transform_u5C5E_u6027"><a href="#transform_u5C5E_u6027" class="headerlink" title="transform属性"></a>transform属性</h4><ul>
+<li>none    定义不进行转换。</li>
+<li>matrix(n,n,n,n,n,n)    定义 2D 转换，使用六个值的矩阵。</li>
+<li>matrix3d(n,n,n,n,n,n,n,n,n,n,n,n,n,n,n,n)    定义 3D 转换，使用 16 个值的 4x4 矩阵</li>
+<li>translate(x,y)    定义 2D 转换。</li>
+<li>translate3d(x,y,z)    定义 3D 转换。</li>
+<li>translateX(x)    定义转换，只是用 X 轴的值。</li>
+<li>translateY(y)    定义转换，只是用 Y 轴的值。</li>
+<li>translateZ(z)    定义 3D 转换，只是用 Z 轴的值。</li>
+<li>scale(x,y)    定义 2D 缩放转换。</li>
+<li>scale3d(x,y,z)    定义 3D 缩放转换。</li>
+<li>scaleX(x)    通过设置 X 轴的值来定义缩放转换。</li>
+<li>scaleY(y)    通过设置 Y 轴的值来定义缩放转换。</li>
+<li>scaleZ(z)    通过设置 Z 轴的值来定义 3D 缩放转换。</li>
+<li>rotate(angle)    定义 2D 旋转，在参数中规定角度。</li>
+<li>rotate3d(x,y,z,angle)    定义 3D 旋转。</li>
+<li>rotateX(angle)    定义沿着 X 轴的 3D 旋转。</li>
+<li>rotateY(angle)    定义沿着 Y 轴的 3D 旋转。</li>
+<li>rotateZ(angle)    定义沿着 Z 轴的 3D 旋转。</li>
+<li>skew(x-angle,y-angle)    定义沿着 X 和 Y 轴的 2D 倾斜转换。</li>
+<li>skewX(angle)    定义沿着 X 轴的 2D 倾斜转换。</li>
+<li>skewY(angle)    定义沿着 Y 轴的 2D 倾斜转换。</li>
+<li>perspective(n)    为 3D 转换元素定义透视视图。</li>
+</ul>
+<p>例子</p>
+<p><style></p>
+<p>#box {<br>  width: 100px;<br>  height: 100px;<br>  background-color: red;<br>  transition-duration: 1s;<br>}</p>
+<p>#box:hover {<br>    transform:scale(1.2);<br>}<br></style></p>
+<div id="box"></div>
+
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#box &#123;</span><br><span class="line">  width: 100px;</span><br><span class="line">  height: 100px;</span><br><span class="line">  background-color: red;</span><br><span class="line">  transition-duration: 1s; // 动画持续时间</span><br><span class="line">&#125;</span><br><span class="line">#box:hover &#123;</span><br><span class="line">	transform:scaleX(1.2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果设置了transform的变化 都是会脱离文档流</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://qiuyuntao.github.io/2016/10/03/animate/" data-id="cittraxkt0000rt9707anb6i7" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css/">css</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-reduceBundleJs" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/04/04/reduceBundleJs/" class="article-date">
@@ -111,7 +243,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://qiuyuntao.github.io/2016/04/04/reduceBundleJs/" data-id="cittr40bo0000gz97joto1kfs" class="article-share-link">Share</a>
+      <a data-url="https://qiuyuntao.github.io/2016/04/04/reduceBundleJs/" data-id="cittr9qu50000qi97i4s1hyoy" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
@@ -163,7 +295,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://qiuyuntao.github.io/2016/03/08/iosOrientation/" data-id="cittr40c6000bgz97n128s1g1" class="article-share-link">Share</a>
+      <a data-url="https://qiuyuntao.github.io/2016/03/08/iosOrientation/" data-id="cittr9qun000bqi97uxh8omy5" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ios/">ios</a></li></ul>
@@ -217,7 +349,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://qiuyuntao.github.io/2016/02/13/initialMacApacheConfig/" data-id="cittr40c8000egz97ahozlrzb" class="article-share-link">Share</a>
+      <a data-url="https://qiuyuntao.github.io/2016/02/13/initialMacApacheConfig/" data-id="cittr9quq000eqi97f1qmmouz" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mac/">mac</a></li></ul>
@@ -334,7 +466,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://qiuyuntao.github.io/2016/02/04/publishNpmModule/" data-id="cittr40by0003gz97n6cim9la" class="article-share-link">Share</a>
+      <a data-url="https://qiuyuntao.github.io/2016/02/04/publishNpmModule/" data-id="cittr9que0003qi97ah0d1huy" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/npm/">npm</a></li></ul>
@@ -466,7 +598,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://qiuyuntao.github.io/2016/02/04/npmTutorial/" data-id="cittr40c10006gz97ya3uzoo9" class="article-share-link">Share</a>
+      <a data-url="https://qiuyuntao.github.io/2016/02/04/npmTutorial/" data-id="cittr9quh0006qi97ysa6qyji" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/npm/">npm</a></li></ul>
@@ -513,7 +645,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://qiuyuntao.github.io/2016/01/27/npmRunScript/" data-id="cittr40c40008gz97bo4llnuk" class="article-share-link">Share</a>
+      <a data-url="https://qiuyuntao.github.io/2016/01/27/npmRunScript/" data-id="cittr9qul0008qi97id3lc8zz" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/node/">node</a></li></ul>
@@ -568,7 +700,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://qiuyuntao.github.io/2016/01/25/getReset/" data-id="cittr40ca000hgz97wkavzx8w" class="article-share-link">Share</a>
+      <a data-url="https://qiuyuntao.github.io/2016/01/25/getReset/" data-id="cittr9qus000hqi975bhdw9xu" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/">git</a></li></ul>
@@ -619,7 +751,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://qiuyuntao.github.io/2016/01/21/checkIsInIframe/" data-id="cittr40ce000kgz97nd6rqaxf" class="article-share-link">Share</a>
+      <a data-url="https://qiuyuntao.github.io/2016/01/21/checkIsInIframe/" data-id="cittr9quu000kqi974rxrvpqg" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
@@ -643,7 +775,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios/">ios</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/">mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/npm/">npm</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios/">ios</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mac/">mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/npm/">npm</a></li></ul>
     </div>
   </div>
 
@@ -653,7 +785,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/ios/" style="font-size: 10px;">ios</a> <a href="/tags/javascript/" style="font-size: 20px;">javascript</a> <a href="/tags/mac/" style="font-size: 10px;">mac</a> <a href="/tags/node/" style="font-size: 10px;">node</a> <a href="/tags/npm/" style="font-size: 20px;">npm</a>
+      <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/ios/" style="font-size: 10px;">ios</a> <a href="/tags/javascript/" style="font-size: 20px;">javascript</a> <a href="/tags/mac/" style="font-size: 10px;">mac</a> <a href="/tags/node/" style="font-size: 10px;">node</a> <a href="/tags/npm/" style="font-size: 20px;">npm</a>
     </div>
   </div>
 
@@ -662,7 +794,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">April 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li></ul>
     </div>
   </div>
 
@@ -673,6 +805,10 @@
     <h3 class="widget-title">Recents</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2016/10/03/animate/">css 动画</a>
+          </li>
         
           <li>
             <a href="/2016/04/04/reduceBundleJs/">减少bundle.js体积</a>
@@ -688,10 +824,6 @@
         
           <li>
             <a href="/2016/02/04/publishNpmModule/">发布一个npm模块</a>
-          </li>
-        
-          <li>
-            <a href="/2016/02/04/npmTutorial/">npm教程</a>
           </li>
         
       </ul>
